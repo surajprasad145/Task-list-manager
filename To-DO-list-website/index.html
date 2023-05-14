@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Lora', 'Times New Roman', serif !important;
+            font-size: medium;
+            font-style: unset;
+            font-weight: 300;
+        }
+
+        mark {
+            background-color: black;
+            color: whitesmoke;
+        }
+    </style>
+    <title>YOUR TO-DO-LIST CHECKER</title>
+</head>
+
+<body class="m-0 p-0">
+
+    <div class="alert alert-success alert-warning alert-dismissible fade show w-auto" role="alert">
+        <h4 class="text-center alert-heading">Welcome to our website!</h4>
+        <p class="text-center">To-Do list is a great tool where you can manage your daily task in a challenging and
+            competitve enivorment. With the help of our tool you will able to remember all your tasks and you can also
+            add description for your tasks.</p>
+        <hr>
+        <p class="text-center">Just use our free To-do-list website to have a good time management. And complete all
+            your work just in a fixed time frame. </p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <nav class="navbar navbar-dark bg-dark my-2 mx-2">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white border 2px py-1"><b>MY-PERSONAL-TO-DO-LIST</b></a>
+            <form class="d-flex my-2">
+                <button class="btn btn-outline-light btn-lg " type="submit">Our Premium Plans</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container-fluid py-1 my-4">
+        <h1 class="text-center"><mark><b>YOUR TO-DO-LIST CHECKER</b></mark></h1>
+    </div>
+    <div class="container">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" class="form-control" aria-describedby="emailHelp"
+                placeholder="Title for the list">
+            <small id="emailHelp" class="form-text text-muted">Add your title which you want to do.</small>
+        </div>
+
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" rows="3" id="description"
+                placeholder="Provide Description for the title."></textarea>
+            <small id="Description" class="form-text text-muted">Just add details about your title in the
+                Description.
+            </small>
+
+
+            <div class="my-2">
+                <button type="submit" id="add" class="btn btn-info btn-sm ">Add to the list</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="items" class="my-2 table-responsive">
+        <h2 class="text-center"><u>Items</u></h2>
+        <table class="table table-warning table-striped my-2 mx-4 table-bordered w-auto mx-auto ">
+            <thead>
+                <tr>
+                    <th scope="col">S.no</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Your Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr>
+                    <th scope="row">1</th>
+                    <td>GYM</td>
+                    <td>Workout for 30 mins</td>
+                    <td><button class="btn btn-danger btn-sm ">Delete</button></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        function getAndupdate() {
+            console.log("The list is getting updated");
+            tit = document.getElementById('title').value;
+            desc = document.getElementById('description').value;
+            if (localStorage.getItem('itemsJson') == null) {
+                itemJsonArray = [];
+                itemJsonArray.push([tit, desc]);
+                localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray));
+            }
+            else {
+                itemJsonArrayStr = localStorage.getItem('itemsJson');
+                itemJsonArray = JSON.parse(itemJsonArrayStr);
+                itemJsonArray.push([tit, desc]);
+                localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray));
+            }
+            update();
+
+        }
+        function update() {
+
+            if (localStorage.getItem('itemsJson') == null) {
+                itemJsonArray = [];
+                localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray));
+            }
+            else {
+                itemJsonArrayStr = localStorage.getItem('itemsJson');
+                itemJsonArray = JSON.parse(itemJsonArrayStr);
+            }
+
+            let tableBody = document.getElementById("tableBody");
+            let str = " ";
+            itemJsonArray.forEach((element, index) => {
+                str += `
+                        <tr>
+                            <th scope="row">${index + 1}</th>
+                            <td>${element[0]}</td>
+                            <td>${element[1]}</td>
+                            <td><button class=" btn btn-danger btn-sm " onclick = "deleted(${index})">Delete</button></td>
+                        </tr> `;
+            });
+            tableBody.innerHTML = str;
+        }
+        add = document.getElementById("add");
+        add.addEventListener("click", getAndupdate);
+        update();
+
+        function deleted(itemIndex) {
+            console.log("Delete", itemIndex);
+            itemJsonArrayStr = localStorage.getItem('itemsJson');
+            itemJsonArray = JSON.parse(itemJsonArrayStr);
+            itemJsonArray.splice(itemIndex, 1)
+            localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray));
+            update();
+
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>
